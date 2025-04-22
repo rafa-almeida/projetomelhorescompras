@@ -5,9 +5,11 @@ INSERT INTO T_CLIENTE VALUES (3,'RUA MARATIS 44 JD CLELIA SAO PAULO SP','RAMON S
 INSERT INTO T_CLIENTE VALUES (4,'AVENIDA PAULISTA 1106 BELA VISTA SAO PAULO SP','FIAP PAULISTA','FIAP@FIAP.COM.BR','11933858010','FIAP','5945','A','5');
 INSERT INTO T_CLIENTE VALUES (5,'RUA DA PAZ 44 ALTO DA BOA VISTA SAO PAULO SP','ANDERSON DIAS','ANDDIAS@GMAIL.COM','11956892453','RAMS','5698','A','4');
 
---Consultando todas as linhas da tabela mc_cliente
-SELECT * FROM T_CLIENTE;
-
+--Inserindo data de término
+ALTER TABLE T_CLIENTE 
+  ADD (
+    dt_termino DATE );
+    
 --Atualizando status e  data de término TABELA CLIENTE
 UPDATE  T_CLIENTE
     SET STATUS_CLIENTE = 'I', 
@@ -17,11 +19,8 @@ WHERE CD_CLIENTE = 1;
 --Consultando todas as linhas da tabela t_cliente
 SELECT * FROM T_CLIENTE WHERE CD_CLIENTE = 1 ;
 
---Inserindo data de término
-ALTER TABLE T_CLIENTE 
-  ADD (
-    dt_termino DATE );
-
+--Consultando todas as linhas da tabela mc_cliente
+SELECT * FROM T_CLIENTE;
 
 
 --Inserindo registros na tabela mc_depto
@@ -216,26 +215,72 @@ INSERT INTO MC_FUNCIONARIO (
 VALUES(9,2, 6, 'Joseph Francis Tribbiani', TO_DATE('09-01-1980', 'DD-MM-YYYY'), 'M', 'Homem Cisgênero', 'Atendente IV', 4098.77, 'joseph.tribbiani@mc.com', 'A', TO_DATE('30-06-2023', 'DD-MM-YYYY'), null);
 
 --Inserindo registros na tabela mc_estado
+CREATE TABLE MC_ESTADO  (
+  SG_ESTADO CHAR (2) NOT NULL,
+  NM_ESTADO VARCHAR2 (30)NOT NULL
+  );
+  
+ALTER TABLE MC_ESTADO
+ADD CONSTRAINT pk_mc_estado
+PRIMARY KEY (SG_ESTADO);
+
 
 INSERT INTO MC_ESTADO (SG_ESTADO, NM_ESTADO) VALUES ('SP', 'São Paulo');
 INSERT INTO MC_ESTADO (SG_ESTADO, NM_ESTADO) VALUES ('PI', 'Piauí');
 INSERT INTO MC_ESTADO (SG_ESTADO, NM_ESTADO) VALUES ('MG', 'Minas Gerais');
 
--- Inserindo registros na tabela mc_cidade
+-- Eliminando estado ligado a uma cidade
+DELETE FROM MC_ESTADO
+ WHERE sg_estado = 'SP' AND nm_estado = 'São Paulo';
 
-INSERT INTO MC_CIDADE (SG_ESTADO, NM_CIDADE, CD_IBGE, NR_DDD) VALUES ('SP', 'São Paulo', 3550308, 11);
-INSERT INTO MC_CIDADE (SG_ESTADO, NM_CIDADE, CD_IBGE, NR_DDD) VALUES ('SP', 'São Bernardo do Campo', 3548708, 11);
-INSERT INTO MC_CIDADE (SG_ESTADO, NM_CIDADE, CD_IBGE, NR_DDD) VALUES ('MG', 'Belo Horizonte', 3106200, 31);
-INSERT INTO MC_CIDADE (SG_ESTADO, NM_CIDADE, CD_IBGE, NR_DDD) VALUES ('MG', 'Juiz de Fora', 3136702, 32);
-INSERT INTO MC_CIDADE (SG_ESTADO, NM_CIDADE, CD_IBGE, NR_DDD) VALUES ('PI', 'Teresina', 2211001, 86);
-INSERT INTO MC_CIDADE (SG_ESTADO, NM_CIDADE, CD_IBGE, NR_DDD) VALUES ('PI', 'Cajueiro da Praia', 2202083, 86);
+--Consultando linha estado apagada.
+SELECT * FROM MC_ESTADO 
+
+-- Inserindo registros na tabela mc_cidade
+CREATE TABLE MC_CIDADE  (
+  CD_CIDADE NUMBER (8),
+  SG_ESTADO CHAR (2), 
+  NM_CIDADE VARCHAR2 (60)NOT NULL, 
+  CD_IBGE NUMBER (8), 
+  NR_DDD NUMBER (3)
+  );
+  
+ALTER TABLE MC_CIDADE
+ADD CONSTRAINT pk_mc_cidade
+PRIMARY KEY (CD_CIDADE);
+
+INSERT INTO MC_CIDADE (CD_CIDADE, SG_ESTADO, NM_CIDADE, CD_IBGE, NR_DDD) VALUES ('SP', 'São Paulo', 3550308, 11);
+INSERT INTO MC_CIDADE (CD_CIDADE, SG_ESTADO, NM_CIDADE, CD_IBGE, NR_DDD) VALUES ('SP', 'São Bernardo do Campo', 3548708, 11);
+INSERT INTO MC_CIDADE (CD_CIDADE, SG_ESTADO, NM_CIDADE, CD_IBGE, NR_DDD) VALUES ('MG', 'Belo Horizonte', 3106200, 31);
+INSERT INTO MC_CIDADE (CD_CIDADE, SG_ESTADO, NM_CIDADE, CD_IBGE, NR_DDD) VALUES ('MG', 'Juiz de Fora', 3136702, 32);
+INSERT INTO MC_CIDADE (CD_CIDADE, SG_ESTADO, NM_CIDADE, CD_IBGE, NR_DDD) VALUES ('PI', 'Teresina', 2211001, 86);
+INSERT INTO MC_CIDADE (CD_CIDADE, SG_ESTADO, NM_CIDADE, CD_IBGE, NR_DDD) VALUES ('PI', 'Cajueiro da Praia', 2202083, 86);
 
 -- Inserindo registros na tabela mc_bairro
+CREATE TABLE MC_BAIRRO  (
+  CD_BAIRRO NUMBER (8),
+  NM_BAIRRO VARCHAR2 (45), 
+  NM_ZONA_BAIRRO VARCHAR2 (20) 
+  );
+  
+ALTER TABLE MC_BAIRRO
+ADD CONSTRAINT pk_mc_bairro
+PRIMARY KEY (CD_BAIRRO);
 
-INSERT INTO MC_BAIRRO (CD_CIDADE, NM_BAIRRO, NM_ZONA_BAIRRO) VALUES(1, 'Jardim Paulista', 'Oeste');
-INSERT INTO MC_BAIRRO (CD_CIDADE, NM_BAIRRO, NM_ZONA_BAIRRO) VALUES(2, 'Jardim do Mar', 'Centro');
-INSERT INTO MC_BAIRRO (CD_CIDADE, NM_BAIRRO, NM_ZONA_BAIRRO) VALUES(3, 'Santa Efigênia', null);
-INSERT INTO MC_BAIRRO (CD_CIDADE, NM_BAIRRO, NM_ZONA_BAIRRO) VALUES(4, 'Cascatinha', null);
+-- Inserindo CD_CIDADE
+ALTER TABLE MC_BAIRRO  
+  ADD (
+    cd_cidade NUMBER(8) NOT NULL
+    );
+    
+    ALTER TABLE MC_BAIRRO  
+  MODIFY 
+    cd_cidade NUMBER(8);
+
+INSERT INTO MC_BAIRRO (CD_CIDADE, NM_BAIRRO, NM_ZONA_BAIRRO) VALUES('Jardim Paulista', 'Oeste',1);
+INSERT INTO MC_BAIRRO (CD_CIDADE, NM_BAIRRO, NM_ZONA_BAIRRO) VALUES('Jardim do Mar', 'Centro',2);
+INSERT INTO MC_BAIRRO (CD_CIDADE, NM_BAIRRO, NM_ZONA_BAIRRO) VALUES('Santa Efigênia', 'Centro',3);
+INSERT INTO MC_BAIRRO (CD_CIDADE, NM_BAIRRO, NM_ZONA_BAIRRO) VALUES('Cascatinha', 'Sul',3);
 
 --Inserindo registros na tabela mc_logradouro
 
@@ -272,6 +317,18 @@ VALUES(2, 1, 638, null, TO_DATE('14-08-2023', 'DD-MM-YYYY'), null, 'A');
 
 --Inserindo registros na tabela mc_categoria_prod (categorias de produtos)
 
+CREATE TABLE MC_CATEGORIA_PROD  (
+  TP_CATEGORIA CHAR(1),
+  DS_CATEGORIA VARCHAR2 (500), 
+  DT_INICIO DATE ,
+  DT_TERMINO DATE,
+  ST_CATEGORIA CHAR(1)
+  );
+  
+ALTER TABLE MC_CATEGORIA_PROD
+ADD CONSTRAINT pk_mc_categoria_prod
+PRIMARY KEY (CD_CATEGORIA);
+
 INSERT INTO MC_CATEGORIA_PROD(
     TP_CATEGORIA,
     DS_CATEGORIA,
@@ -301,6 +358,21 @@ VALUES('P', 'Pet Shop', null, null, 'A');
 
 --Inserindo registros na tabela mc_produto
 
+CREATE TABLE MC_PRODUTO  (
+    CD_CATEGORIA NUMBER NOT NULL,
+    NR_CD_BARRAS_PROD VARCHAR2 (50),
+    DS_PRODUTO VARCHAR2 (80) NOT NULL,
+    VL_UNITARIO NUMBER (8,2) NOT NULL,
+    TP_EMBALAGEM VARCHAR2 (15),
+    ST_PRODUTO CHAR (1),
+    VL_PERC_LUCRO NUMBER (8,2),
+    DS_COMPLETA_PROD VARCHAR2 (4000)NOT NULL
+  );
+  
+ALTER TABLE MC_PRODUTO
+ADD CONSTRAINT pk_mc_produto
+PRIMARY KEY (CD_CATEGORIA);
+
 INSERT INTO MC_PRODUTO(
     CD_CATEGORIA,
     NR_CD_BARRAS_PROD,
@@ -312,6 +384,14 @@ INSERT INTO MC_PRODUTO(
     DS_COMPLETA_PROD
     )
 VALUES(1, '846293756910', 'Notebool Dell Inspiron 15', 5879.99, null, 'A', null, 'Notebool Dell Inspiron 15 Intel Core i5 516MB SSD');
+
+--Atualizando status de produto
+UPDATE  MC_PRODUTO
+    SET ST_PRODUTO = 'X' 
+WHERE DS_PRODUTO = 'Notebool Dell Inspiron 15';
+
+--Consultando status do produto 
+SELECT * FROM MC_PRODUTO WHERE DS_PRODUTO = 'Notebool Dell Inspiron 15' ;
 
 INSERT INTO MC_PRODUTO(
     CD_CATEGORIA,
@@ -360,6 +440,10 @@ INSERT INTO MC_PRODUTO(
     DS_COMPLETA_PROD
     )
 VALUES(3, '455563214885', 'Ração Seca Felina Royal Canin Gastrointestinal Fibre Response 1.5kg', 288.99, null, 'A', null, 'Ração Seca Royal Canin Veterinary Diet Gastrointestinal Fibre Response Gatos com Doenças Intestinais');
+
+--Exibindo informações da categoria produto 
+SELECT * FROM MC_PRODUTO 
+
 
 --Inserindo registros na tabela mc_categoria_prod (categorias de vídeos)
 
