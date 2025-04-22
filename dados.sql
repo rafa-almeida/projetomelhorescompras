@@ -1,3 +1,16 @@
+--Inserindo registros na tabela mc_cliente
+INSERT INTO T_CLIENTE VALUES (1,'RUA DOS CAMORINS 32 JD CLELIA SAO PAULO SP','JOSE FRANCISCO DAS CHAGAS','JOSEF@GMAIL.COM','11945852142','JOSEF','8534','A','3');
+INSERT INTO T_CLIENTE VALUES (2,'RUA COIMBRA 532 CENTRO DIADEMA SP','ADRIANO PEREIRA DA SILVA','ADRIANP@GMAIL.COM','11956210236','ADRI','2365','A','2');
+INSERT INTO T_CLIENTE VALUES (3,'RUA MARATIS 44 JD CLELIA SAO PAULO SP','RAMON SOUZA DIAS','RAMS@GMAIL.COM','11985423156','RAMS','5698','A','5');
+INSERT INTO T_CLIENTE VALUES (4,'AVENIDA PAULISTA 1106 BELA VISTA SAO PAULO SP','FIAP PAULISTA','FIAP@FIAP.COM.BR','11933858010','FIAP','5945','A','5');
+INSERT INTO T_CLIENTE VALUES (5,'RUA DA PAZ 44 ALTO DA BOA VISTA SAO PAULO SP','ANDERSON DIAS','ANDDIAS@GMAIL.COM','11956892453','RAMS','5698','A','4');
+
+--Consultando todas as linhas da tabela mc_cliente
+SELECT * FROM T_CLIENTE;
+
+--Inserindo registros na tabela mc_cli_fisica
+INSERT INTO T_CLIENTE_P_FISICA VALUES (1,'33239856198','14101988','1','1');
+
 --Inserindo registros na tabela mc_depto
 
 INSERT INTO MC_DEPTO (NM_DEPTO, ST_DEPTO) VALUES('Comercial', 'A');
@@ -5,8 +18,38 @@ INSERT INTO MC_DEPTO (NM_DEPTO, ST_DEPTO) VALUES('Financeiro', 'A');
 INSERT INTO MC_DEPTO (NM_DEPTO, ST_DEPTO) VALUES('SAC', 'A');
 
 --Inserindo registros na tabela mc_funcionario
+ ALTER TABLE MC_FUNCIONARIO  
+  ADD (
+    cd_depto NUMBER(10)   NOT NULL,
+    cd_gerente NUMBER(10)   NOT NULL,
+    nm_funcionario VARCHAR2(30) NOT NULL,
+    dt_mascimento DATE NOT NULL,
+    fl_sexo_biologico VARCHAR2 (2) NOT NULL,
+    ds_genero VARCHAR2 (2) NOT NULL,
+    ds_cargo VARCHAR2(30) NOT NULL,
+    vl_salario NUMBER(5,2) NOT NULL, 
+    ds_email VARCHAR2(30) NOT NULL,
+    st_func VARCHAR2(2) NOT NULL,
+    dt_cadastramento DATE NOT NULL ,
+    dt_desligamento  DATE 
+);
+
+--modificando nome de coluna
+ALTER TABLE MC_FUNCIONARIO RENAME COLUMN dt_mascimento TO dt_nascimento; 
+
+--modificando a obrigatoridade de uma coluna
+ALTER TABLE MC_FUNCIONARIO 
+    MODIFY ds_genero VARCHAR2 (100);
+   
+ALTER TABLE MC_FUNCIONARIO 
+    MODIFY dt_cadastramento DATE;          
+
+
+--Consultando todas as linhas da tabela mc_funcionario
+SELECT * FROM MC_FUNCIONARIO;
 
 INSERT INTO MC_FUNCIONARIO (
+    CD_FUNCIONARIO,
     CD_DEPTO,
     CD_GERENTE,
     NM_FUNCIONARIO,
@@ -19,10 +62,11 @@ INSERT INTO MC_FUNCIONARIO (
     ST_FUNC,
     DT_CADASTRAMENTO,
     DT_DESLIGAMENTO)
-VALUES(1, null, 'Picolina Osorio Fortes', TO_DATE('10-04-1989', 'DD-MM-YYYY'), 'F', 'Mulher Cisgênero', 'Gerente de Vendas', 11983.00, 'pic.fortes@mc.com', 'A', TO_DATE('13-01-2013', 'DD-MM-YYYY'), null);
+VALUES(1,1, null, 'Picolina Osorio Fortes', TO_DATE('10-04-1989', 'DD-MM-YYYY'), 'F', 'Mulher Cisgênero', 'Gerente de Vendas', 11983.00, 'pic.fortes@mc.com', 'A', TO_DATE('13-01-2013', 'DD-MM-YYYY'), null);
 
 
 INSERT INTO MC_FUNCIONARIO (
+    CD_FUNCIONARIO,
     CD_DEPTO,
     CD_GERENTE,
     NM_FUNCIONARIO,
@@ -35,9 +79,10 @@ INSERT INTO MC_FUNCIONARIO (
     ST_FUNC,
     DT_CADASTRAMENTO,
     DT_DESLIGAMENTO)
-VALUES(1, 1, 'Rachel Karen Green', TO_DATE('05-05-1979', 'DD-MM-YYYY'), 'F', 'Mulher Cisgênero', 'Vendedor(a) V', 4867.55, 'rachel.green@mc.com', 'A', TO_DATE('14-08-2019', 'DD-MM-YYYY'), null);
+VALUES(2,1, 1, 'Rachel Karen Green', TO_DATE('05-05-1979', 'DD-MM-YYYY'), 'F', 'Mulher Cisgênero', 'Vendedor(a) V', 4867.55, 'rachel.green@mc.com', 'A', TO_DATE('14-08-2019', 'DD-MM-YYYY'), null);
 
 INSERT INTO MC_FUNCIONARIO (
+    CD_FUNCIONARIO,
     CD_DEPTO,
     CD_GERENTE,
     NM_FUNCIONARIO,
@@ -50,9 +95,10 @@ INSERT INTO MC_FUNCIONARIO (
     ST_FUNC,
     DT_CADASTRAMENTO,
     DT_DESLIGAMENTO)
-VALUES(1, 1, 'Gavin Edward Mitchell', TO_DATE('08-08-1981', 'DD-MM-YYYY'), 'M', 'Homem Cisgênero', 'Vendedor(a) II', 3498.4, 'gavin.mitchell@mc.com', 'A', TO_DATE('04-09-2023', 'DD-MM-YYYY'), null);
+VALUES(3,1, 1, 'Gavin Edward Mitchell', TO_DATE('08-08-1981', 'DD-MM-YYYY'), 'M', 'Homem Cisgênero', 'Vendedor(a) II', 3498.4, 'gavin.mitchell@mc.com', 'A', TO_DATE('04-09-2023', 'DD-MM-YYYY'), null);
 
 INSERT INTO MC_FUNCIONARIO (
+    CD_FUNCIONARIO,
     CD_DEPTO,
     CD_GERENTE,
     NM_FUNCIONARIO,
@@ -65,9 +111,10 @@ INSERT INTO MC_FUNCIONARIO (
     ST_FUNC,
     DT_CADASTRAMENTO,
     DT_DESLIGAMENTO)
-VALUES(2, null, 'Chandler Muriel Bing', TO_DATE('10-04-1978', 'DD-MM-YYYY'), 'M', null, 'Gerente Financeiro', 27023.89, 'chandler.bing@mc.com', 'A', TO_DATE('13-01-2013', 'DD-MM-YYYY'), null);
-
+VALUES(4,2, 'Chandler Muriel Bing', TO_DATE('10-04-1978', 'DD-MM-YYYY'), 'M', 'M', 'Gerente Financeiro', 27023.89, 'chandler.bing@mc.com', 'A', TO_DATE('13-01-2013', 'DD-MM-YYYY'), null);
+  
 INSERT INTO MC_FUNCIONARIO (
+    CD_FUNCIONARIO,
     CD_DEPTO,
     CD_GERENTE,
     NM_FUNCIONARIO,
@@ -80,9 +127,35 @@ INSERT INTO MC_FUNCIONARIO (
     ST_FUNC,
     DT_CADASTRAMENTO,
     DT_DESLIGAMENTO)
-VALUES(2, 4, 'Michael Gary Scott', TO_DATE('09-09-1963', 'DD-MM-YYYY'), 'M', null, 'Analista Financeiro Senior I', 12432.69, 'michael.scott@mc.com', 'A', TO_DATE('28-02-2019', 'DD-MM-YYYY'), null);
+VALUES(5,2,4, 'Michael Gary Scott', TO_DATE('09/09/1964','DD/MM/YYYY'), 'M', null, 'Analista Financeiro Senior I', 12432.69, 'michael.scott@mc.com', 'A', TO_DATE('26/02/2019','DD/MM/YYYY'), null);
+
 
 INSERT INTO MC_FUNCIONARIO (
+    CD_FUNCIONARIO,
+    CD_DEPTO,
+    CD_GERENTE,
+    NM_FUNCIONARIO,
+    DT_NASCIMENTO,
+    FL_SEXO_BIOLOGICO,
+    DS_GENERO,
+    DS_CARGO,
+    VL_SALARIO, 
+    DS_EMAIL,
+    ST_FUNC,
+    DT_CADASTRAMENTO)
+VALUES(6,2, 4, 'James Duncan Halpert', TO_DATE('16-03-1982', 'DD-MM-YYYY'), 'M', 'Homem Cisgênero', 'Especialista Financeiro', 13008.55, 'james.halpert@mc.com', 'A', TO_DATE('19/10/2019', 'DD/MM/YYYY'));
+
+--funcionario ira receber 12% de aumento e atualizacao de cargo
+UPDATE  MC_FUNCIONARIO
+    SET DS_CARGO = 'Especialista Financeiro Senior' ,
+        VL_SALARIO = VL_SALARIO *1.12 
+WHERE CD_FUNCIONARIO = 6;
+
+--Consultando todas as linhas da tabela mc_funcionario
+SELECT * FROM MC_FUNCIONARIO WHERE CD_FUNCIONARIO = 6 ;
+
+INSERT INTO MC_FUNCIONARIO (
+    CD_FUNCIONARIO,
     CD_DEPTO,
     CD_GERENTE,
     NM_FUNCIONARIO,
@@ -95,9 +168,10 @@ INSERT INTO MC_FUNCIONARIO (
     ST_FUNC,
     DT_CADASTRAMENTO,
     DT_DESLIGAMENTO)
-VALUES(2, 4, 'James Duncan Halpert', TO_DATE('16-03-1982', 'DD-MM-YYYY'), 'M', 'Homem Cisgênero', 'Especialista Financeiro', 13008.55, 'james.halpert@mc.com', 'A', TO_DATE('19-10-2019', 'DD-MM-YYYY'), null);
+VALUES(7,3, null, 'Pamela Morgan Halpert', TO_DATE('11-12-1981', 'DD-MM-YYYY'), 'F', 'Mulher Cisgênero', 'Gerente de SAC', 27023.89, 'pamela.halpert@mc.com', 'A', TO_DATE('27-11-1019', 'DD-MM-YYYY'), null);
 
 INSERT INTO MC_FUNCIONARIO (
+    CD_FUNCIONARIO,
     CD_DEPTO,
     CD_GERENTE,
     NM_FUNCIONARIO,
@@ -110,9 +184,10 @@ INSERT INTO MC_FUNCIONARIO (
     ST_FUNC,
     DT_CADASTRAMENTO,
     DT_DESLIGAMENTO)
-VALUES(3, null, 'Pamela Morgan Halpert', TO_DATE('11-12-1981', 'DD-MM-YYYY'), 'F', 'Mulher Cisgênero', 'Gerente de SAC', 27023.89, 'pamela.halpert@mc.com', 'A', TO_DATE('27-11-1019', 'DD-MM-YYYY'), null);
+VALUES(8,2, 6, 'Phoebe Buffay-Hannigan', TO_DATE('16-02-1985', 'DD-MM-YYYY'), 'F', null, 'Atendente IV', 4098.77, 'phoebe.buffay@mc.com', 'A', TO_DATE('30-06-2023', 'DD-MM-YYYY'), null);
 
 INSERT INTO MC_FUNCIONARIO (
+    CD_FUNCIONARIO,
     CD_DEPTO,
     CD_GERENTE,
     NM_FUNCIONARIO,
@@ -125,22 +200,7 @@ INSERT INTO MC_FUNCIONARIO (
     ST_FUNC,
     DT_CADASTRAMENTO,
     DT_DESLIGAMENTO)
-VALUES(2, 6, 'Phoebe Buffay-Hannigan', TO_DATE('16-02-1985', 'DD-MM-YYYY'), 'F', null, 'Atendente IV', 4098.77, 'phoebe.buffay@mc.com', 'A', TO_DATE('30-06-2023', 'DD-MM-YYYY'), null);
-
-INSERT INTO MC_FUNCIONARIO (
-    CD_DEPTO,
-    CD_GERENTE,
-    NM_FUNCIONARIO,
-    DT_NASCIMENTO,
-    FL_SEXO_BIOLOGICO,
-    DS_GENERO,
-    DS_CARGO,
-    VL_SALARIO, 
-    DS_EMAIL,
-    ST_FUNC,
-    DT_CADASTRAMENTO,
-    DT_DESLIGAMENTO)
-VALUES(2, 6, 'Joseph Francis Tribbiani', TO_DATE('09-01-1980', 'DD-MM-YYYY'), 'M', 'Homem Cisgênero', 'Atendente IV', 4098.77, 'joseph.tribbiani@mc.com', 'A', TO_DATE('30-06-2023', 'DD-MM-YYYY'), null);
+VALUES(9,2, 6, 'Joseph Francis Tribbiani', TO_DATE('09-01-1980', 'DD-MM-YYYY'), 'M', 'Homem Cisgênero', 'Atendente IV', 4098.77, 'joseph.tribbiani@mc.com', 'A', TO_DATE('30-06-2023', 'DD-MM-YYYY'), null);
 
 --Inserindo registros na tabela mc_estado
 
